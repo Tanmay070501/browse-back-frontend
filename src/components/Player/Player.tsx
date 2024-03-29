@@ -1,9 +1,12 @@
 import { event } from '@/event'
 import React from 'react'
-import rrwebPlayer from 'rrweb-player'
-import 'rrweb-player/dist/style.css';
+// import rrwebPlayer from 'rrweb-player'
+// import 'rrweb-player/dist/style.css';
+import rrwebPlayer from "@tannu-dev/rrweb-player"
+import "@tannu-dev/rrweb-player/dist/style.css"
 import { Scrubber } from 'react-scrubber';
 import 'react-scrubber/lib/scrubber.css'
+
 
 import { Button } from "@/components/ui/button"
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon } from '@radix-ui/react-icons';
@@ -17,7 +20,7 @@ const Player = ({ padding = 40 }: Props) => {
     const [value, setValue] = React.useState(0)
     const [play, setPlay] = React.useState(false)
     const [width, setWidth] = React.useState(0)
-    console.log(document.getElementById('video-wrapper'))
+    // console.log(document.getElementById('video-wrapper'))
     const [height, _setHeight] = React.useState(0)
     const [fs, setFs] = React.useState(false)
     function toggleFullscreen() {
@@ -65,17 +68,18 @@ const Player = ({ padding = 40 }: Props) => {
         replayer.current.play()
     }
 
-    const handleScrubChange = (d: number) => {
-        // console.log(d)
-        setValue(() => d)
-        
+    const handleScrubChange = (value: number) => {
+        console.log("scrub change", value)
+        if(!replayer.current) return
+        const goToTime = (value/100) * replayer.current.getMetaData().totalTime
+        replayer.current?.goto(goToTime, play)
+        setValue(() => value)
     }
 
+    
+
     React.useEffect(() => {
-        if(!replayer.current) return
-        console.log(value)
-        const goToTime = (value/100) * replayer.current.getMetaData().totalTime
-        replayer.current?.goto(goToTime)
+        if(value === 100) setPlay(false)
     }, [value])
     
 
@@ -85,15 +89,22 @@ const Player = ({ padding = 40 }: Props) => {
         if(!element) return
         document.addEventListener('fullscreenchange', (e) => {
             e.preventDefault()
-            setPlay(() => false)
-            setValue(0)
             if(e.target === element){
-                setWidth(wrapperEl?.clientWidth || 0)
+                // setWidth(wrapperEl?.clientWidth || 0)
+                // hack for resizing timely    
+                setTimeout(() => {
+                    if(!replayer.current) return
+                    replayer.current.$set({
+                        width: wrapperEl?.clientWidth || 0,
+                    })
+                    replayer.current.triggerResize()
+                }, 1000)
             }
         })
     }, [])
 
     React.useEffect(() => {
+        if(replayer.current) return
         const elWidth = document.getElementById('wrapper')?.clientWidth ?? 0
         const elHeight = document.getElementById('wrapper')?.clientHeight ?? 0
         const element = document.createElement('div')
@@ -107,23 +118,34 @@ const Player = ({ padding = 40 }: Props) => {
                 insertStyleRules: [],
                 width: width || elWidth,
                 height: height ? height :  elHeight - padding,
+                skipInactive: true,
+                speed: 8
             }
         })
 
         
         replayer.current.addEventListener('ui-update-current-time', (event) => {
+            if(!replayer.current) return
             // console.log(event.payload);
-            const perentage = (event.payload) / replayer.current?.getMetaData().totalTime
-            setValue(() => perentage * 100)
+            const percentage = (event.payload) / replayer.current.getMetaData().totalTime
+            setValue(() => percentage * 100)
         });
 
-        return () => {
-            if(document.getElementById('video-player')){
-                document.getElementById('video-player')?.removeChild(element)
+        replayer.current.addEventListener('ui-update-player-state', (event) => {
+            console.log("player state", event.payload)
+            switch(event.payload){
+                case 'paused': 
+                    setPlay(() => false)
+                    break;
+                case 'playing': 
+                    setPlay(() => true)
+                    break;
+                default:
+                    break;
             }
-            replayer.current?.getReplayer().destroy()
-        }
-    }, [width, height])
+        });
+
+    }, [])
 
     return (
         <>
@@ -139,8 +161,6 @@ const Player = ({ padding = 40 }: Props) => {
                         min={0}
                         max={100}
                         value={value}
-                        onScrubStart={d => setValue(() => d)}
-                        onScrubEnd={d => setValue(() => d)}
                         onScrubChange={handleScrubChange}
                         tooltip={{
                             enabledOnHover: true,
@@ -157,7 +177,7 @@ const Player = ({ padding = 40 }: Props) => {
                         <Button className='h-8 w-8' onClick={handlePlayPause} variant="outline" size="icon">
                             {!play ? <PlayIcon className='h-4 w-4' /> : <PauseIcon className='h-4 w-4' />}
                         </Button>
-                        <Button className='h-8 w-8' onClick={toggleFullscreen} variant="outline" size="icon">
+                        <Button className='h-8 w-8 ml-auto' onClick={toggleFullscreen} variant="outline" size="icon">
                             {!fs ? <ExitFullScreenIcon className='h-4 w-4' /> : <EnterFullScreenIcon className='h-4 w-4' />}
                         </Button>
                     </div>
