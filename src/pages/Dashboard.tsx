@@ -4,7 +4,7 @@ type Props = {}
 
 function Dashboard({}: Props) {
   return (
-    <div>Dashboard</div>
+    <div>Dashboard Work in progress</div>
   )
 }
 

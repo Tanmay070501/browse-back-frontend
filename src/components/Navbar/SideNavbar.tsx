@@ -45,7 +45,13 @@ const SideNavbar = (props: Props) => {
                         </li>)
                     })
                 }
+                <li className='mt-auto mb-4'>
+                <Button className='w-full'>
+                    + Create New Project
+                </Button>
+                </li>
             </ul>
+            
         </div>
     </nav>
   )

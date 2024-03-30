@@ -9,13 +9,23 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { AvatarIcon } from '@radix-ui/react-icons'
+import { DropdownWithSearch } from '../DropdownWithSearch/DropdownWithSearch'
 
 type Props = {}
 
 const Navbar = (props: Props) => {
+  const [project, setProject] = React.useState("") 
   return (
     <nav className='min-h-16 h-16 bg-white shadow-sm relative z-[1]'>
         <div className='flex items-center w-full h-full px-4'>
+        <DropdownWithSearch 
+            label='Select Project' 
+            notFoundLabel='No project found' 
+            searchLabel='Search Project' 
+            value={project} 
+            onChange={setProject} 
+            options={[]} 
+        />
         <DropdownMenu>
             <DropdownMenuTrigger asChild className='ml-auto'>
             <Avatar className='cursor-pointer'>
