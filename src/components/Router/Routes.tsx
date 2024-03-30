@@ -1,0 +1,62 @@
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
+import Login from "../Unauthenticated/Login"
+import Signup from "../Unauthenticated/Signup"
+import Unauthenticated from "../Unauthenticated/Unauthenticated"
+import { authenticatedRouterPaths, unverifiedRouterPaths } from "@/constants/router"
+import SetupOrg from "../Unauthenticated/SetupOrg"
+import { useUserStore } from "@/store/useUserStore"
+import Authenticated from "../Layouts/Authenticated"
+import Dashboard from "@/pages/Dashboard"
+import SessionReplays from "@/pages/SessionReplays"
+
+type Props = {}
+
+const unverifiedRouter = createBrowserRouter([
+    {
+        path: unverifiedRouterPaths.LOGIN,
+        element: <Unauthenticated/>
+    },
+    {
+        path: unverifiedRouterPaths.SIGNUP,
+        element: <Unauthenticated/>
+    }, 
+    {
+        path: unverifiedRouterPaths.SETUP_ORG,
+        element: <SetupOrg/>
+    },
+    {
+        path: '*',
+        element: <Navigate to={unverifiedRouterPaths.LOGIN}/>
+    },
+
+])
+
+const authenticatedRouter = createBrowserRouter([
+  {
+    path: "*",
+    element: <Authenticated/>,
+    children: [
+      {
+        path: authenticatedRouterPaths.DASHBOARD,
+        element: <Dashboard/>
+      },
+      {
+        path: authenticatedRouterPaths.SESSION_REPLAYS,
+        element: <SessionReplays/>
+      },
+      {
+        path: "*",
+        element: <Navigate to={`/${authenticatedRouterPaths.DASHBOARD}`}/>
+      }
+    ]
+  }
+])
+const Routes = (props: Props) => {
+  const authToken = useUserStore(state => state.authToken)
+  const router = authToken ? authenticatedRouter : unverifiedRouter
+  return (
+    <RouterProvider router={router}/>
+  )
+}
+
+export default Routes

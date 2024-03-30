@@ -84,3 +84,7 @@
   background-color: white !important;
   border-color: red;
 }
+
+#root{
+  height: 100vh;
+}
