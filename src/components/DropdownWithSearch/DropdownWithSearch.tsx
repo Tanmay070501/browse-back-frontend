@@ -45,10 +45,7 @@ import { CommandList } from "cmdk"
 //   ]
   
 interface Props {
-    options?: Array<{
-        label: string,
-        value: string
-    }>,
+    options?: Array<string>,
     label?: string,
     notFoundLabel?: string,
     searchLabel?: string,
@@ -72,7 +69,7 @@ export function DropdownWithSearch(props: Props) {
           className="w-[175px] justify-between"
         >
           {props.value
-            ? options.find((option) => option.value === props.value)?.label
+            ? options.find((option) => option === props.value) ?? label
             : label}
           <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -85,26 +82,21 @@ export function DropdownWithSearch(props: Props) {
           <CommandGroup>
             {options.map((option) => (
               <CommandItem
-                className={cn(
-                    "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-                    // className
-                )}
-                key={option.value}
-                value={option.value}
+                key={option}
+                value={option}
                 onSelect={(currentValue) => {
-                console.log(currentValue)
+                  console.log(currentValue)
                   props?.onChange(currentValue === props.value ? "" : currentValue)
                   setOpen(false)
                 }}
-                disabled={false}
               >
                 <CheckIcon
                   className={cn(
                     "mr-2 h-4 w-4",
-                    props.value === option.value ? "opacity-100" : "opacity-0"
+                    props.value === option ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {option.label}
+                {option}
               </CommandItem>
             ))}
           </CommandGroup>

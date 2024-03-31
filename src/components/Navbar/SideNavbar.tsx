@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { authenticatedRouterPaths } from '@/constants/router'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import CreateProject from '../CreateNewProject/CreateProject'
 
 const navItems = [
     {
@@ -46,9 +47,10 @@ const SideNavbar = (props: Props) => {
                     })
                 }
                 <li className='mt-auto mb-4'>
-                <Button className='w-full'>
+                {/* <Button className='w-full'>
                     + Create New Project
-                </Button>
+                </Button> */}
+                    <CreateProject className='w-full'/>
                 </li>
             </ul>
             
