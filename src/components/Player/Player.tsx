@@ -1,21 +1,25 @@
-import { event } from '@/event'
 import React from 'react'
 // import rrwebPlayer from 'rrweb-player'
 // import 'rrweb-player/dist/style.css';
 import rrwebPlayer from "@tannu-dev/rrweb-player"
 import "@tannu-dev/rrweb-player/dist/style.css"
 import { Scrubber } from 'react-scrubber';
-import 'react-scrubber/lib/scrubber.css'
+import 'react-scrubber/lib/scrubber.css';
+import moment from "moment"
 
 
 import { Button } from "@/components/ui/button"
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon } from '@radix-ui/react-icons';
+import { errorToast } from '@/toast/toast';
 
 type Props = {
-    padding?: number
+    padding?: number,
+    events?: Array<any>
 }
 
-const Player = ({ padding = 40 }: Props) => {
+const Player = ({ padding = 40, events = [] }: Props) => {
+    const [duration, setDuration] = React.useState(0)
+    const [timer, setTimer] = React.useState(0)
     const replayer = React.useRef<rrwebPlayer | null>(null)
     const [value, setValue] = React.useState(0)
     const [play, setPlay] = React.useState(false)
@@ -105,6 +109,10 @@ const Player = ({ padding = 40 }: Props) => {
 
     React.useEffect(() => {
         if(replayer.current) return
+        if(events.length < 2){
+            errorToast("Player needs atleast two events")
+            return;
+        } 
         const elWidth = document.getElementById('wrapper')?.clientWidth ?? 0
         const elHeight = document.getElementById('wrapper')?.clientHeight ?? 0
         const element = document.createElement('div')
@@ -112,20 +120,22 @@ const Player = ({ padding = 40 }: Props) => {
         replayer.current = new rrwebPlayer({
             target: element,
             props: {
-                events: event,
+                events: events,
                 showController: false,
                 autoPlay: false,
                 insertStyleRules: [],
                 width: width || elWidth,
                 height: height ? height :  elHeight - padding,
                 skipInactive: true,
-                speed: 8
             }
         })
+
+        setDuration(() => replayer.current?.getReplayer()?.getMetaData().totalTime ?? 0)
 
         
         replayer.current.addEventListener('ui-update-current-time', (event) => {
             if(!replayer.current) return
+            setTimer(() => event.payload)
             // console.log(event.payload);
             const percentage = (event.payload) / replayer.current.getMetaData().totalTime
             setValue(() => percentage * 100)
@@ -167,16 +177,26 @@ const Player = ({ padding = 40 }: Props) => {
                             formatString: (value) => {
                                 if(!replayer.current) return ''
                                 // console.log(value)
-                                return `${Math.round((value/100) * replayer.current.getMetaData().totalTime/1000)}`
+                                const x = Math.round((value/100) * replayer.current.getMetaData().totalTime)
+                                const duration = moment.utc(x).format('HH:mm:ss');
+                                // const hours = Math.floor(duration.asHours());
+                                // const minutes = duration.minutes();
+                                console.log(x, duration)
+                                return `${duration}`
+                                // return `${hours}:${minutes.toString().padStart(2, '0')}`;
+                                // return `${Math.round((value/100) * replayer.current.getMetaData().totalTime/1000)}`
                             },
                             enabledOnScrub: true,
                             className: "bar-tooltip"
                         }}
                     />
-                    <div className='flex gap-2'>
+                    <div className='flex gap-2 items-center'>
                         <Button className='h-8 w-8' onClick={handlePlayPause} variant="outline" size="icon">
                             {!play ? <PlayIcon className='h-4 w-4' /> : <PauseIcon className='h-4 w-4' />}
                         </Button>
+                        {  
+                            <p>{moment.utc(timer).format('HH:mm:ss')}/{moment.utc(duration).format('HH:mm:ss')}</p>
+                        }
                         <Button className='h-8 w-8 ml-auto' onClick={toggleFullscreen} variant="outline" size="icon">
                             {!fs ? <ExitFullScreenIcon className='h-4 w-4' /> : <EnterFullScreenIcon className='h-4 w-4' />}
                         </Button>

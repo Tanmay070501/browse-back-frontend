@@ -8,6 +8,7 @@ import { useUserStore } from "@/store/useUserStore"
 import Authenticated from "../Layouts/Authenticated"
 import Dashboard from "@/pages/Dashboard"
 import SessionReplays from "@/pages/SessionReplays"
+import SingleSessionReplay from "@/pages/SingleSessionReplay"
 
 type Props = {}
 
@@ -39,6 +40,10 @@ const authenticatedRouter = createBrowserRouter([
       {
         path: authenticatedRouterPaths.DASHBOARD,
         element: <Dashboard/>
+      },
+      {
+        path: authenticatedRouterPaths.SINGLE_SESSION_REPLAY,
+        element: <SingleSessionReplay/>
       },
       {
         path: authenticatedRouterPaths.SESSION_REPLAYS,

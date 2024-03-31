@@ -6,5 +6,6 @@ export enum unverifiedRouterPaths {
 
 export enum authenticatedRouterPaths {
     DASHBOARD = "dashboard",
-    SESSION_REPLAYS = "session_replays"
+    SESSION_REPLAYS = "session_replays",
+    SINGLE_SESSION_REPLAY = "session_replays/:sessionId"
 }
