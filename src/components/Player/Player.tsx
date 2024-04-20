@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon } from '@radix-ui/react-icons';
 import { errorToast } from '@/toast/toast';
 import { event } from '@/@types/events';
+import { Speedometer } from './Speedometer';
 
 type Props = {
     padding?: number,
@@ -19,6 +20,8 @@ type Props = {
 }
 
 const Player = ({ padding = 40, events = [] }: Props) => {
+    const speedList = [1, 2, 4, 8];
+    const [speed, setSpeed] = React.useState(1);
     const [duration, setDuration] = React.useState(0)
     const [timer, setTimer] = React.useState(0)
     const replayer = React.useRef<rrwebPlayer | null>(null)
@@ -132,6 +135,7 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                 plugins: [
                     // getReplayConsolePlugin()
                 ],
+                speed: 1,
             }
         })
 
@@ -171,12 +175,19 @@ const Player = ({ padding = 40, events = [] }: Props) => {
             }
         });
 
+        
+
         return () => {
             replayer.current?.$destroy()
             replayer.current = null
         }
 
     }, [])
+
+    React.useEffect(() => {
+        if(!replayer.current) return;
+        replayer.current.setSpeed(speed)
+    }, [speed])
 
     return (
         <>
@@ -212,6 +223,7 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                         {  
                             <p>{moment.utc(timer).format('HH:mm:ss')}/{moment.utc(duration).format('HH:mm:ss')}</p>
                         }
+                        <Speedometer className={'h-8 w-8'} speedList={speedList} activeId={speed} changeSpeed={setSpeed}/>
                         <Button className='h-8 w-8 ml-auto' onClick={toggleFullscreen} variant="outline" size="icon">
                             {!fs ? <ExitFullScreenIcon className='h-4 w-4' /> : <EnterFullScreenIcon className='h-4 w-4' />}
                         </Button>
