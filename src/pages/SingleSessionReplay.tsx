@@ -20,7 +20,7 @@ const SingleSessionReplay = (_props: Props) => {
 
         init()
     }, [])
-    // console.log(currentSessionReplay)
+    
     if(loading) return <p>Loading</p>
     if(!Object.keys(currentSessionReplay ?? {}).length)
         return <p>nothing to show</p>

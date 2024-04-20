@@ -1,16 +1,14 @@
 import { Project } from "@/@types/project"
-import { User } from "@/@types/user"
 import { customAxios } from "@/axios/customAxios"
 import { ProjectFormData } from "@/constants/project"
 import { useProjectStore } from "@/store/useProjectStore"
-import { useUserStore } from "@/store/useUserStore"
 import { errorToast } from "@/toast/toast"
 import { urlProvider } from "@/urls/urlProvider"
 import axios from "axios"
 import { toast } from "sonner"
 
 export const getProjects = async () => {
-    // const setUser = useUserStore.getState().setUser
+    
     const setProjectsList = useProjectStore.getState().setProjectsList
     const setCurrentProject = useProjectStore.getState().setCurrentProject
     const currentProject = useProjectStore.getState().currentProject
@@ -31,8 +29,6 @@ export const getProjects = async () => {
 }
 
 export const createProject = async (data: ProjectFormData) => {
-    console.log("hi")
-    // const setUser = useUserStore.getState().setUser
     const setCurrentProject = useProjectStore.getState().setCurrentProject
 
     try{

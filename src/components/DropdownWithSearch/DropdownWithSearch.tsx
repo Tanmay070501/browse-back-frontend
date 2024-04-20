@@ -1,6 +1,5 @@
 
 import * as React from "react"
-// import { Check, ChevronsUpDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,7 +10,6 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command"
-// import {Command} from  "cmdk"
 import {
   Popover,
   PopoverContent,
@@ -20,29 +18,6 @@ import {
 
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons"
 import { CommandList } from "cmdk"
-
-// const frameworks = [
-//     {
-//       value: "next.js",
-//       label: "Next.js",
-//     },
-//     {
-//       value: "sveltekit",
-//       label: "SvelteKit",
-//     },
-//     {
-//       value: "nuxt.js",
-//       label: "Nuxt.js",
-//     },
-//     {
-//       value: "remix",
-//       label: "Remix",
-//     },
-//     {
-//       value: "astro",
-//       label: "Astro",
-//     },
-//   ]
   
 interface Props {
     options?: Array<string>,
@@ -85,7 +60,6 @@ export function DropdownWithSearch(props: Props) {
                 key={option}
                 value={option}
                 onSelect={(currentValue) => {
-                  console.log(currentValue)
                   props?.onChange(currentValue === props.value ? "" : currentValue)
                   setOpen(false)
                 }}

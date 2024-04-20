@@ -12,11 +12,9 @@ export const useSessionStore = create<SessionReplaysStore>((set) => ({
     sessionReplays: null,
     currentSessionReplay: null,
     setSessionReplays: (data: SessionReplay[]) => {
-        // console.log(data)
         set({sessionReplays: data})
     },
     setCurrentSessionReplay: (data: SessionReplay) => {
-        // console.log(data)
         set({currentSessionReplay: data})
     },
 }));

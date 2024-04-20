@@ -49,7 +49,6 @@ const JoinOrg = (_props: Props) => {
     }
 
     joinOrg(formVals, () => setFormVals(joinOrginitialVals(token ?? "")));
-    // setupOrg(formVals, () => setFormVals(setupOrginitialVals(token ?? "")))
   }
   return (
     <>

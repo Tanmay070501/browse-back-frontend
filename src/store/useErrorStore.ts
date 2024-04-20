@@ -8,7 +8,6 @@ interface ErrorState {
 export const useErrorStore = create<ErrorState>((set) => ({
     message: "",
     setErrorMessage: (message) => {
-        console.log(message)
         set({message})
     },
 }));

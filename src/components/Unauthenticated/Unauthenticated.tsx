@@ -1,14 +1,4 @@
-// import { Button } from "@/components/ui/button"
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
+
 import {
   Tabs,
   TabsContent,
@@ -23,7 +13,7 @@ import Signup from "./Signup"
 
 type Props = {}
 
-const Unauthenticated = (props: Props) => {
+const Unauthenticated = (_props: Props) => {
     
     const location = useLocation()
     

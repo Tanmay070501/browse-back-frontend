@@ -1,6 +1,4 @@
 import React from 'react'
-// import rrwebPlayer from 'rrweb-player'
-// import 'rrweb-player/dist/style.css';
 import rrwebPlayer from "@tannu-dev/rrweb-player"
 import "@tannu-dev/rrweb-player/dist/style.css"
 import { Scrubber } from 'react-scrubber';
@@ -132,9 +130,6 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                 width: elWidth,
                 height: elHeight - padding,
                 skipInactive: true,
-                plugins: [
-                    // getReplayConsolePlugin()
-                ],
                 speed: 1,
             }
         })

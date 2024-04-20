@@ -7,13 +7,11 @@ import axios from "axios"
 
 export const getSessionReplays = async (projectId: number) => {
     if(!projectId) return
-    // const setUser = useUserStore.getState().setUser
     const setSessionReplays = useSessionStore.getState().setSessionReplays
     try{
         const res = await customAxios.get<{sessions: Array<SessionReplay>}>(`${urlProvider.session}/${projectId}`)
         if(res.data?.sessions){
             setSessionReplays(res.data?.sessions)
-            // setUser(res.data)
         }
     }catch(err){
         if(axios.isAxiosError(err)){
@@ -24,13 +22,11 @@ export const getSessionReplays = async (projectId: number) => {
 
 export const getSingleSession = async (sessionId: string) => {
     if(!sessionId) return
-    // const setUser = useUserStore.getState().setUser
     const setCurrentSessionReplay = useSessionStore.getState().setCurrentSessionReplay
     try{
         const res = await customAxios.get<SessionReplay>(`${urlProvider.session}/single_session/${sessionId}`)
         if(res.data){
             setCurrentSessionReplay(res.data)
-            // setUser(res.data)
         }
     }catch(err){
         if(axios.isAxiosError(err)){

@@ -28,7 +28,6 @@ const Navbar = (_props: Props) => {
   const navigate = useNavigate()
   const handleChange = (val: string) => {
     const project = projectsList.find(el => el.name === val)
-    console.log(project, val)
     if(!project) return
     setCurrentProject(project)
     if(location.pathname.includes("/session_replays/")){

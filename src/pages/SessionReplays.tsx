@@ -1,4 +1,3 @@
-// import Player from '@/components/Player/Player'
 import { SessionReplay } from '@/@types/session'
 import { getSessionReplays } from '@/actions/session'
 import { useProjectStore } from '@/store/useProjectStore'

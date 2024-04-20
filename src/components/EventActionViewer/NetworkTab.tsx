@@ -55,7 +55,6 @@ const columns = [
 ]
 
 export const NetworkTab = (props: Props) => {
-    console.log(props)
     const table = useReactTable({
         data: (props.events as customTableHelperType[]) ?? [],
         columns: columns,

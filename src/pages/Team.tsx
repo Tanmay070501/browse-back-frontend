@@ -42,7 +42,7 @@ const Team = (_props: Props) => {
 
     const deleteAction = () => {
         if(!deleteId) return;
-        console.log(deleteId)
+
         removeUser(deleteId)
     }
 
@@ -127,8 +127,6 @@ const Team = (_props: Props) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    // className='cursor-pointer'
-                    // onClick={() => {navigate(`/session_replays/${row.original.sessionId}`)}}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell  className='py-6' key={cell.id}>
