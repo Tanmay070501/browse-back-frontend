@@ -19,7 +19,7 @@ import { joinOrg } from './actions/actions'
 
 type Props = {}
 
-const JoinOrg = (props: Props) => {
+const JoinOrg = (_props: Props) => {
   const errorMessage = useErrorStore((state) => state.message)
   const setErrorMessage = useErrorStore(state => state.setErrorMessage)
   const [searchParams] = useSearchParams()

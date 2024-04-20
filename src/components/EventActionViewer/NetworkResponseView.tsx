@@ -1,11 +1,9 @@
-import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from '../ui/button'
 import { CrossCircledIcon } from '@radix-ui/react-icons'
 import { event } from '@/@types/events'
 import { JsonView, allExpanded, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
-import { ScrollArea } from '../ui/scroll-area'
 import { cn } from '@/lib/utils'
 
 type Props = {

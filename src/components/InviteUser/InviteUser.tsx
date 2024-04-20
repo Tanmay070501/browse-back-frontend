@@ -1,14 +1,11 @@
 import React from 'react'
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogPortal,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import ErrorAlert from '../Error/ErrorAlert'
 import { InviteUserFormData } from '@/@types/user'

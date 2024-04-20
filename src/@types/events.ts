@@ -11,8 +11,11 @@ export type event = {
             url: string,
             requestHeaders?: any,
             responseHeaders?: any,
-            method?: string
-        }
+            method?: string,
+            requestBody?: any;
+            responseBody?: any;
+        },
+        tag?: string
     },
     timestamp: number
 }

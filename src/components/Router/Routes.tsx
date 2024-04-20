@@ -1,6 +1,4 @@
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
-import Login from "../Unauthenticated/Login"
-import Signup from "../Unauthenticated/Signup"
 import Unauthenticated from "../Unauthenticated/Unauthenticated"
 import { authenticatedRouterPaths, unverifiedRouterPaths } from "@/constants/router"
 import SetupOrg from "../Unauthenticated/SetupOrg"
@@ -66,7 +64,7 @@ const authenticatedRouter = createBrowserRouter([
     ]
   }
 ])
-const Routes = (props: Props) => {
+const Routes = (_props: Props) => {
   const authToken = useUserStore(state => state.authToken)
   const router = authToken ? authenticatedRouter : unverifiedRouter
   return (

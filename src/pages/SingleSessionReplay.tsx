@@ -7,11 +7,10 @@ import { useParams } from 'react-router'
 
 type Props = {}
 
-const SingleSessionReplay = (props: Props) => {
+const SingleSessionReplay = (_props: Props) => {
     const {sessionId} = useParams()
     const [loading, setLoading] = React.useState(false)
     const currentSessionReplay = useSessionStore(state => state.currentSessionReplay)
-    console.log(loading, currentSessionReplay?.events)
     React.useEffect(() => {
         const init = async () => {
             setLoading(() => true)

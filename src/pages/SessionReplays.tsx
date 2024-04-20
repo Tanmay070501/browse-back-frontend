@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table"
 
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
@@ -85,7 +85,7 @@ const columns = [
 
 type Props = {}
 
-const SessionReplays = (props: Props) => {
+const SessionReplays = (_props: Props) => {
   const currentProject = useProjectStore(state => state.currentProject)
   const sessionReplays = useSessionStore(state => state.sessionReplays)
 

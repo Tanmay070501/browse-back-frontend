@@ -11,7 +11,7 @@ import moment from "moment"
 import { Button } from "@/components/ui/button"
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon } from '@radix-ui/react-icons';
 import { errorToast } from '@/toast/toast';
-// import { getReplayConsolePlugin } from 'rrweb';
+import { event } from '@/@types/events';
 
 type Props = {
     padding?: number,
@@ -24,10 +24,8 @@ const Player = ({ padding = 40, events = [] }: Props) => {
     const replayer = React.useRef<rrwebPlayer | null>(null)
     const [value, setValue] = React.useState(0)
     const [play, setPlay] = React.useState(false)
-    const [width, setWidth] = React.useState(0)
-    // console.log(document.getElementById('video-wrapper'))
-    const [height, _setHeight] = React.useState(0)
     const [fs, setFs] = React.useState(false)
+    const [ended, setEnded] = React.useState(false);
     function toggleFullscreen() {
         const elem = document.getElementById('video-controller');
         if(!elem) return;
@@ -70,22 +68,25 @@ const Player = ({ padding = 40, events = [] }: Props) => {
             return;
         }
         setPlay(() => true)
-        replayer.current.play()
-    }
-
-    const handleScrubChange = (value: number) => {
-        console.log("scrub change", value)
-        if(!replayer.current) return
-        const goToTime = (value/100) * replayer.current.getMetaData().totalTime
-        replayer.current?.goto(goToTime, play)
-        setValue(() => value)
+        replayer.current.goto(timer, true);
     }
 
     
-
+    const handleScrubChange = (value: number) => {
+        if(!replayer.current) return
+        const goToTime = (value/100) * replayer.current.getMetaData().totalTime
+        replayer.current?.goto(goToTime, play)
+        
+        setValue(() => value)
+    }
+    
+    
     React.useEffect(() => {
-        if(value === 100) setPlay(false)
-    }, [value])
+        if(ended){
+            setTimer(0)
+        }
+    }, [ended])
+
     
 
     React.useEffect(() => {
@@ -95,7 +96,6 @@ const Player = ({ padding = 40, events = [] }: Props) => {
         document.addEventListener('fullscreenchange', (e) => {
             e.preventDefault()
             if(e.target === element){
-                // setWidth(wrapperEl?.clientWidth || 0)
                 // hack for resizing timely    
                 setTimeout(() => {
                     if(!replayer.current) return
@@ -126,8 +126,8 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                 showController: false,
                 autoPlay: false,
                 insertStyleRules: [],
-                width: width || elWidth,
-                height: height ? height :  elHeight - padding,
+                width: elWidth,
+                height: elHeight - padding,
                 skipInactive: true,
                 plugins: [
                     // getReplayConsolePlugin()
@@ -143,22 +143,22 @@ const Player = ({ padding = 40, events = [] }: Props) => {
 
         setDuration(() => replayer.current?.getReplayer()?.getMetaData().totalTime ?? 0)
 
-        replayer.current.getReplayer().on('event-cast', (e) => {
-            if(e.type === 6){
-                console.log(e)
+        replayer.current.getReplayer().on('event-cast', (e: any) => {
+            if((e as event).type === 5 && (e as event)?.data?.tag === "end"){
+                setEnded(true);
             }
         })
 
         replayer.current.addEventListener('ui-update-current-time', (event) => {
             if(!replayer.current) return
+            setEnded(false);
             setTimer(() => event.payload)
-            // console.log(event.payload);
-            const percentage = (event.payload) / replayer.current.getMetaData().totalTime
+            const totalTime = replayer.current.getMetaData().totalTime
+            const percentage = (event.payload) / totalTime
             setValue(() => percentage * 100)
         });
 
         replayer.current.addEventListener('ui-update-player-state', (event) => {
-            console.log("player state", event.payload)
             switch(event.payload){
                 case 'paused': 
                     setPlay(() => false)
@@ -197,16 +197,10 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                             enabledOnHover: true,
                             formatString: (value) => {
                                 if(!replayer.current) return ''
-                                // console.log(value)
                                 const x = Math.round((value/100) * replayer.current.getMetaData().totalTime)
                                 const duration = moment.utc(x).format('HH:mm:ss');
-                                // const hours = Math.floor(duration.asHours());
-                                // const minutes = duration.minutes();
-                                console.log(x, duration)
                                 return `${duration}`
-                                // return `${hours}:${minutes.toString().padStart(2, '0')}`;
-                                // return `${Math.round((value/100) * replayer.current.getMetaData().totalTime/1000)}`
-                            },
+                           },
                             enabledOnScrub: true,
                             className: "bar-tooltip"
                         }}

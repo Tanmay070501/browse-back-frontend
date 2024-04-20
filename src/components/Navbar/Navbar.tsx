@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Avatar, AvatarFallback, } from "@/components/ui/avatar"
 import {
     DropdownMenu,
@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from 'react-router'
 
 type Props = {}
 
-const Navbar = (props: Props) => {
+const Navbar = (_props: Props) => {
   const projectsList = useProjectStore(state => state.projectsList)
   const currentProject = useProjectStore(state => state.currentProject)
   const setCurrentProject = useProjectStore(state => state.setCurrentProject)

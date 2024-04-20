@@ -19,16 +19,6 @@ import {
 
 import { TooltipArrow } from '@radix-ui/react-tooltip'
 
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-  } from "@/components/ui/drawer"
 import { NetworkResponseView } from './NetworkResponseView'
 import React from 'react'
    
@@ -134,7 +124,7 @@ export const NetworkTab = (props: Props) => {
         </TableBody>
       </Table>
       {
-        open && 
+        open && event &&
         <div className='w-full absolute bottom-0 h-1/2 left-0 bg-white'>
           <NetworkResponseView event={event} triggerClose={() => setOpen(false)}/>
         </div>

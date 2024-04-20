@@ -23,7 +23,7 @@ const columnHelper = createColumnHelper<customTableHelperType>()
 
 type Props = {}
 
-const Team = (props: Props) => {
+const Team = (_props: Props) => {
 
     const user = useUserStore(state => state.user)
     
@@ -33,7 +33,7 @@ const Team = (props: Props) => {
     })
 
     const [open, setOpen] = React.useState(false)
-    const [deleteId, setDeleteId] = React.useState<Number | null>(null);
+    const [deleteId, setDeleteId] = React.useState<number | null>(null);
 
     const handleUserDelete = (id:number) => {
         setDeleteId(() => id)
