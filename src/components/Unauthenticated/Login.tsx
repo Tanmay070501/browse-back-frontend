@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,11 +13,13 @@ import ErrorAlert from "../Error/ErrorAlert"
 import { useErrorStore } from "@/store/useErrorStore"
 import { login } from "./actions/actions"
 import { LoginFormData, LoginFormDataKeys, loginInitialVals } from "@/constants/unauth-type"
+import { Link } from "react-router-dom"
 
 type Props = {}
 
-const Login = (props: Props) => {
+const Login = (_props: Props) => {
   const errorMessage = useErrorStore((state) => state.message)
+  const setErrorMessage = useErrorStore(state => state.setErrorMessage)
   const [formVals, setFormVals] = React.useState<LoginFormData>(loginInitialVals)
 
   const valueChangeHandler = (key: LoginFormDataKeys, value: any) => {
@@ -30,16 +31,20 @@ const Login = (props: Props) => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
+    setErrorMessage("")
     if(!formVals.email){
+      setErrorMessage("Email is required")
       return;
     } 
     if(!formVals.password){
+      setErrorMessage("Password is required")
       return;
     }
     login(formVals, () => setFormVals(loginInitialVals))
   }
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <Card>
         <CardHeader>
@@ -54,7 +59,8 @@ const Login = (props: Props) => {
                 value={formVals.email} 
                 id="email" 
                 type="email" 
-                onChange={e => valueChangeHandler(LoginFormDataKeys.email, e.target.value)}  
+                onChange={e => valueChangeHandler(LoginFormDataKeys.email, e.target.value)} 
+                required 
               />
             </div>
             <div className="space-y-1">
@@ -64,7 +70,8 @@ const Login = (props: Props) => {
                 value={formVals.password}  
                 id="password" 
                 type="password"  
-                onChange={e => valueChangeHandler(LoginFormDataKeys.password, e.target.value)} 
+                onChange={e => valueChangeHandler(LoginFormDataKeys.password, e.target.value)}
+                required 
               />
             </div>
         </CardContent>
@@ -73,6 +80,12 @@ const Login = (props: Props) => {
         </CardFooter>
       </Card>
     </form>
+    <Button className="text-blue-400 p-0" variant={"link"} asChild >
+      <Link to="/forget_password">
+          Forgot Password?
+      </Link>
+    </Button>
+    </>
   )
 }
 

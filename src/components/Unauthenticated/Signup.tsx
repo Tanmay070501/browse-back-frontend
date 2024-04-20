@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -17,7 +16,7 @@ import { signup } from "./actions/actions"
 
 type Props = {}
 
-const Signup = (props: Props) => {
+const Signup = (_props: Props) => {
   const errorMessage = useErrorStore((state) => state.message)
   const setErrorMessage = useErrorStore(state => state.setErrorMessage)
   const [formVals, setFormVals] = React.useState<SignupFormData>(signupInitialVals)

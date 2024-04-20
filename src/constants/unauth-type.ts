@@ -61,3 +61,16 @@ export const joinOrginitialVals: (token: string) => JoinOrgData = (token) => ({
     password: "",
     token
 })
+
+
+export enum ForgetPassFormDataKeys {
+    email = "email",
+}
+
+export type ForgetPassFormData = {
+    email: string,
+}
+
+export const forgetPassInitialVals: ForgetPassFormData = {
+    email: "",
+}
