@@ -11,6 +11,7 @@ import moment from "moment"
 import { Button } from "@/components/ui/button"
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon } from '@radix-ui/react-icons';
 import { errorToast } from '@/toast/toast';
+// import { getReplayConsolePlugin } from 'rrweb';
 
 type Props = {
     padding?: number,
@@ -100,6 +101,7 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                     if(!replayer.current) return
                     replayer.current.$set({
                         width: wrapperEl?.clientWidth || 0,
+                        height: wrapperEl?.clientHeight || 0
                     })
                     replayer.current.triggerResize()
                 }, 1000)
@@ -120,19 +122,33 @@ const Player = ({ padding = 40, events = [] }: Props) => {
         replayer.current = new rrwebPlayer({
             target: element,
             props: {
-                events: events,
+                events: structuredClone(events),
                 showController: false,
                 autoPlay: false,
                 insertStyleRules: [],
                 width: width || elWidth,
                 height: height ? height :  elHeight - padding,
                 skipInactive: true,
+                plugins: [
+                    // getReplayConsolePlugin()
+                ],
             }
         })
 
+        
+
+        replayer.current?.goto(replayer.current.getMetaData().endTime - replayer.current.getMetaData().startTime, true)
+        replayer.current?.goto(0, false)
+        
+
         setDuration(() => replayer.current?.getReplayer()?.getMetaData().totalTime ?? 0)
 
-        
+        replayer.current.getReplayer().on('event-cast', (e) => {
+            if(e.type === 6){
+                console.log(e)
+            }
+        })
+
         replayer.current.addEventListener('ui-update-current-time', (event) => {
             if(!replayer.current) return
             setTimer(() => event.payload)
@@ -154,6 +170,11 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                     break;
             }
         });
+
+        return () => {
+            replayer.current?.$destroy()
+            replayer.current = null
+        }
 
     }, [])
 

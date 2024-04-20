@@ -30,7 +30,7 @@ const Navbar = (props: Props) => {
 
   const user = useUserStore(state => state.user) 
   return (
-    <nav className='min-h-16 h-16 bg-white shadow-sm relative z-[1]'>
+    <nav className='min-h-16 h-16 bg-white shadow-sm relative z-[1] w-full'>
         <div className='flex items-center w-full h-full px-4'>
         <DropdownWithSearch 
             label='Select Project' 

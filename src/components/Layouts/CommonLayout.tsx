@@ -13,7 +13,7 @@ const CommonLayout = (props: Props) => {
             <SideNavbar/>
             <div className='flex-1 flex flex-col'>
                 <Navbar/>
-                <div className='flex-1 p-4'>
+                <div className='flex-1 p-4 w-full overflow-hidden relative'>
                 {props.children}
                 </div>
             </div>

@@ -1,0 +1,1 @@
+export const NETWORK_PLUGIN_NAME = "rrweb/network@1"

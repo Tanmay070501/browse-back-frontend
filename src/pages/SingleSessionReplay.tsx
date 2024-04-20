@@ -11,7 +11,7 @@ const SingleSessionReplay = (props: Props) => {
     const {sessionId} = useParams()
     const [loading, setLoading] = React.useState(false)
     const currentSessionReplay = useSessionStore(state => state.currentSessionReplay)
-    console.log(loading, currentSessionReplay)
+    console.log(loading, currentSessionReplay?.events)
     React.useEffect(() => {
         const init = async () => {
             setLoading(() => true)
@@ -26,11 +26,11 @@ const SingleSessionReplay = (props: Props) => {
     if(!Object.keys(currentSessionReplay ?? {}).length)
         return <p>nothing to show</p>
   return (
-    <div className='w-full h-full relative flex'>
+    <div className='w-full h-full flex'>
         <div style={{width: 800, height:"100%"}}>
             <Player events={currentSessionReplay?.events}/>
         </div>
-        <EventActionViewer/>
+        <EventActionViewer events={currentSessionReplay?.events ?? []}/>
     </div>
   )
 }

@@ -6,11 +6,15 @@ import { useSessionStore } from '@/store/useSesstionStore'
 import moment from "moment"
 
 import {
+  PaginationState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+
+import ReactPaginate from 'react-paginate';
 
 import {
   Table,
@@ -23,18 +27,38 @@ import {
 
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/components/ui/button'
 
 type customTableHelperType = SessionReplay & {
   // calculated field
-  duration: string
+  duration: string,
+  index: number
 }
 
 const columnHelper = createColumnHelper<customTableHelperType>()
 
 const columns = [
-  columnHelper.accessor('sessionId', {
-    cell: info => info.getValue(),
-    header: 'Session Id',
+  columnHelper.accessor('index', {
+    cell: info => info.row.index + 1,
+    header: 'index',
+  }),
+  // columnHelper.accessor('sessionId', {
+  //   cell: info => info.getValue(),
+  //   header: 'Session Id',
+  // }),
+  columnHelper.accessor('metadata.username', {
+    cell: info => info?.getValue() ?? 'N/A',
+    header: 'Username',
+  }),
+  columnHelper.accessor('metadata.user_identifier', {
+    cell: info => info?.getValue() ?? 'N/A',
+    header: 'User Identifier',
+  }),
+  columnHelper.accessor('metadata.error', {
+    cell: info => info.getValue() ?? 'N/A',
+    header: 'Recent Error',
   }),
   columnHelper.accessor('started_at', {
     cell: info => moment(info.getValue()).format('lll'),
@@ -64,28 +88,44 @@ type Props = {}
 const SessionReplays = (props: Props) => {
   const currentProject = useProjectStore(state => state.currentProject)
   const sessionReplays = useSessionStore(state => state.sessionReplays)
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 7,
+  })
+
   const table = useReactTable({
     data: (sessionReplays as customTableHelperType[]) ?? [],
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
-    // defaultColumn: () => ({})
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      pagination
+    },
+    onPaginationChange: setPagination,
+    rowCount: ((sessionReplays as customTableHelperType[]) ?? []).length
   },)
   const navigate = useNavigate();
-  // console.log("table", table.getCoreRowModel())
+
+  const handlePageClick = (event: {selected: number}) => {
+    table.setPageIndex(event.selected)
+  };
+
 
   React.useEffect(() => {
     getSessionReplays(currentProject?.id ?? 0)
   }, [currentProject])
-  // console.log(sessionReplays)
+
   return (
-    <div>
+    <div className='h-full flex flex-col gap-4'>
+    <ScrollArea className='flex-1'>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow className='bg-black hover:opacity-100 hover:bg-black' key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead className='text-white' key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -123,56 +163,49 @@ const SessionReplays = (props: Props) => {
           )}
         </TableBody>
       </Table>
+    </ScrollArea>
 
-      {/* <table className='w-full text-center'>
-          <thead>
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr className='py-5' key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <th className='py-4' key={header.id} colSpan={header.colSpan} style={{width: header.getSize()}}>
-                      {header.isPlaceholder ? null : (
-                        <div>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </div>
-                      )}
-                    </th>
-                  )
-                })}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map(row => {
-              return (
-                <tr className='border-y-2' key={row.id}>
-                  <div>
-                <Link className='block w-full' to={"/"}>
-                  {row.getVisibleCells().map(cell => {
-                    return (
-                      <td style={{width: cell.column.getSize()}} key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    )
-                  })}
-                  </Link>
-                  </div>
-                </tr>
+    <div>
+      <ReactPaginate
+          breakLabel="..."
+          nextLabel="Next"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={1}
+          pageCount={table.getPageCount()}
+          previousLabel="Previous"
+          renderOnZeroPageCount={null}
+          className='flex gap-2 justify-center'
+          pageLinkClassName={cn(
+            buttonVariants({
+              variant: "ghost",
+            })
+          )}
+          nextLinkClassName = {cn(
+            buttonVariants({
+              variant: "ghost" 
+            }),
+            "gap-1"
+            )
+          }
+          previousLinkClassName={cn(
+            buttonVariants({
+              variant: "ghost" 
+            }),
+            "gap-1"
+            )
+          }
+          activeLinkClassName={
+            cn(
+              buttonVariants({
+                variant: "outline" 
+              }),
+              "gap-1"
               )
-            })}
-          </tbody>
-        </table> */}
-
-      {/* <div id="video-wrapper" style={{width: "800px", height: "500px"}}>
-      <Player/>
-      </div> */}
-    </div>
+          }
+          disabledClassName={"pointer-events-none cursor-not-allowed"}
+        />
+      </div>
+  </div>
   )
 }
 
