@@ -9,6 +9,8 @@ import Authenticated from "../Layouts/Authenticated"
 import Dashboard from "@/pages/Dashboard"
 import SessionReplays from "@/pages/SessionReplays"
 import SingleSessionReplay from "@/pages/SingleSessionReplay"
+import JoinOrg from "../Unauthenticated/JoinOrg"
+import Team from "@/pages/Team"
 
 type Props = {}
 
@@ -25,6 +27,10 @@ const unverifiedRouter = createBrowserRouter([
         path: unverifiedRouterPaths.SETUP_ORG,
         element: <SetupOrg/>
     },
+    {
+      path: unverifiedRouterPaths.JOIN_ORG,
+      element: <JoinOrg/>
+  },
     {
         path: '*',
         element: <Navigate to={unverifiedRouterPaths.LOGIN}/>
@@ -48,6 +54,10 @@ const authenticatedRouter = createBrowserRouter([
       {
         path: authenticatedRouterPaths.SESSION_REPLAYS,
         element: <SessionReplays/>
+      },
+      {
+        path: authenticatedRouterPaths.TEAM,
+        element: <Team/>
       },
       {
         path: "*",

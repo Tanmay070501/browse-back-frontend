@@ -3,3 +3,12 @@ export enum TokenType {
     SETUP_ORG = "SETUP_ORG",
     LOGIN = "LOGIN"
 }
+
+
+export enum InviteUserFormDataKeys {
+    email = "email"
+}
+
+export const initialInviteUserValue = {
+    email: ""
+}

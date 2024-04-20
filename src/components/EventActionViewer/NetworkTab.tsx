@@ -83,7 +83,7 @@ export const NetworkTab = (props: Props) => {
             <TableRow className='bg-black hover:opacity-100 hover:bg-black' key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead className='text-white' key={header.id}>
+                  <TableHead className='text-white text-center' key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(

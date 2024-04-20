@@ -14,3 +14,7 @@ export interface User extends SingleUser {
         "users": Array<SingleUser>
     }
 }
+
+export interface InviteUserFormData {
+    email: string;
+}

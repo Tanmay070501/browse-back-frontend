@@ -44,3 +44,20 @@ export const setupOrginitialVals: (token: string) => SetupOrgData = (token) => (
     orgName: "",
     token
 })
+
+export enum JoinOrgDataKeys {
+    name = "name",
+    password = "password",
+}
+
+export type JoinOrgData = {
+    name: string,
+    password: string,
+    token?: string
+}
+
+export const joinOrginitialVals: (token: string) => JoinOrgData = (token) => ({
+    name: "",
+    password: "",
+    token
+})

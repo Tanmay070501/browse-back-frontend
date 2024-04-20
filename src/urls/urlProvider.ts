@@ -4,7 +4,7 @@ export enum urlTypes {
     auth = "auth",
     user = "user",
     project = "project",
-    session = "session"
+    session = "session",
 }
 
 export const urlProvider: {

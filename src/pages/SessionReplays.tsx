@@ -44,10 +44,6 @@ const columns = [
     cell: info => info.row.index + 1,
     header: 'index',
   }),
-  // columnHelper.accessor('sessionId', {
-  //   cell: info => info.getValue(),
-  //   header: 'Session Id',
-  // }),
   columnHelper.accessor('metadata.username', {
     cell: info => info?.getValue() ?? 'N/A',
     header: 'Username',
@@ -80,7 +76,11 @@ const columns = [
         const diffMilliseconds = end.diff(start);
         return  moment.duration(diffMilliseconds).humanize()
       },
-  })
+  }),
+  columnHelper.accessor('sessionId', {
+    cell: info => info.getValue(),
+    header: 'Session Id',
+  }),
 ]
 
 type Props = {}

@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../Navbar/Navbar'
 import SideNavbar from '../Navbar/SideNavbar'
+import { InviteUser } from '../InviteUser/InviteUser'
 
 type Props = {
     children: React.ReactNode
@@ -17,8 +18,8 @@ const CommonLayout = (props: Props) => {
                 {props.children}
                 </div>
             </div>
-
         </div>
+        <InviteUser/>
     </>
   )
 }

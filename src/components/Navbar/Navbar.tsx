@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, } from "@/components/ui/avatar"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,10 +8,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
-import { AvatarIcon, ExitIcon, IdCardIcon } from '@radix-ui/react-icons'
+import { AvatarIcon, ExitIcon, IdCardIcon, PlusIcon } from '@radix-ui/react-icons'
 import { DropdownWithSearch } from '../DropdownWithSearch/DropdownWithSearch'
 import { useUserStore } from '@/store/useUserStore'
 import { useProjectStore } from '@/store/useProjectStore'
+import { useInvitePopupStore } from '@/store/useInvitePopupStore'
+import { useLocation, useNavigate } from 'react-router'
 
 type Props = {}
 
@@ -19,16 +21,24 @@ const Navbar = (props: Props) => {
   const projectsList = useProjectStore(state => state.projectsList)
   const currentProject = useProjectStore(state => state.currentProject)
   const setCurrentProject = useProjectStore(state => state.setCurrentProject)
+  const openInviteUserPopup = useInvitePopupStore(state => state.setShow);
   const logout = useUserStore(state => state.logout)
+  const user = useUserStore(state => state.user) 
+  const location = useLocation()
+  const navigate = useNavigate()
   const handleChange = (val: string) => {
     const project = projectsList.find(el => el.name === val)
     console.log(project, val)
     if(!project) return
     setCurrentProject(project)
+    if(location.pathname.includes("/session_replays/")){
+        navigate("/session_replays")
+    }
   }
-//   const [project, setProject] = React.useState("")
+  const inviteUser = () => {
+    openInviteUserPopup(true)
+  }
 
-  const user = useUserStore(state => state.user) 
   return (
     <nav className='min-h-16 h-16 bg-white shadow-sm relative z-[1] w-full'>
         <div className='flex items-center w-full h-full px-4'>
@@ -60,12 +70,21 @@ const Navbar = (props: Props) => {
                     }
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer justify-center items-center'>
+                <DropdownMenuItem onClick={() => navigate('/team')} className='cursor-pointer justify-center items-center'>
                   <span className='flex justify-start items-center w-max gap-2'>
                     <span>Team</span>
                     <IdCardIcon className="h-4 w-4"/>
                   </span>
                 </DropdownMenuItem>
+                {
+                  user?.isAdmin &&
+                  <DropdownMenuItem onSelect={_e => inviteUser()} className='cursor-pointer justify-center items-center'>
+                    <span className='flex justify-start items-center w-max gap-2'>
+                      <span>Add Team Member</span>
+                      <PlusIcon className="h-4 w-4"/>
+                    </span>
+                  </DropdownMenuItem>
+                }
                 <DropdownMenuItem onSelect={_e => logout()} className='cursor-pointer justify-center items-center'>
                   <span className='flex justify-start items-center w-max gap-2'>
                     <span>Log out</span>
