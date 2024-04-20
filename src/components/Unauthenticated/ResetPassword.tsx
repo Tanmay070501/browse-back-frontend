@@ -1,4 +1,3 @@
-
 import {
     Card,
     CardContent,
@@ -12,18 +11,21 @@ import { Button } from "@/components/ui/button"
 import ErrorAlert from "../Error/ErrorAlert"
 import { useErrorStore } from "@/store/useErrorStore"
 import React from "react"
-import { ForgetPassFormData, ForgetPassFormDataKeys, forgetPassInitialVals } from "@/constants/unauth-type"
-import { forgetPass } from "./actions/actions"
+import { ResetPassFormData, ResetPassFormDataKeys, resetPassInitialVals } from "@/constants/unauth-type"
+import { useSearchParams } from "react-router-dom"
+import { resetPass } from "./actions/actions"
 import { Link } from "react-router-dom"
 
 type Props = {}
 
-export const ForgetPassword = (_props: Props) => {
+export const ResetPassword = (_props: Props) => {
+    const [searchParams] = useSearchParams()
+    const token = searchParams.get('token')
     const errorMessage = useErrorStore((state) => state.message)
     const setErrorMessage = useErrorStore(state => state.setErrorMessage)
-    const [formVals, setFormVals] = React.useState<ForgetPassFormData>(forgetPassInitialVals)
+    const [formVals, setFormVals] = React.useState<ResetPassFormData>(resetPassInitialVals(token ?? ""))
 
-    const valueChangeHandler = (key: ForgetPassFormDataKeys, value: any) => {
+    const valueChangeHandler = (key: ResetPassFormDataKeys, value: any) => {
         setFormVals(prev => ({
             ...prev,
             [key]: value
@@ -33,11 +35,11 @@ export const ForgetPassword = (_props: Props) => {
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
         setErrorMessage("")
-        if(!formVals.email){
-            setErrorMessage("Email is required")
+        if(!formVals.password){
+            setErrorMessage("Password is required")
             return;
         } 
-        forgetPass(formVals, () => setFormVals(forgetPassInitialVals));
+        resetPass(formVals, () => setFormVals(resetPassInitialVals(token ?? "")));
     }
 
   return (
@@ -51,13 +53,12 @@ export const ForgetPassword = (_props: Props) => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <div className="space-y-1">
-                        <Label htmlFor="email">Email</Label>
-                        <Input 
-                            autoComplete="email"
-                            value={formVals.email} 
-                            id="email" 
-                            type="email" 
-                            onChange={e => valueChangeHandler(ForgetPassFormDataKeys.email, e.target.value)} 
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                            value={formVals.password} 
+                            id="password" 
+                            type="password" 
+                            onChange={e => valueChangeHandler(ResetPassFormDataKeys.password, e.target.value)} 
                             required 
                         />
                     </div>
@@ -67,11 +68,11 @@ export const ForgetPassword = (_props: Props) => {
                 </CardFooter>
             </Card>
             </form>
-        <Button className="text-blue-400 p-0" variant={"link"} asChild >
-            <Link to="/login">
-                Back to Login
-            </Link>
-        </Button>
+            <Button className="text-blue-400 p-0" variant={"link"} asChild >
+                <Link to="/login">
+                    Back to Login
+                </Link>
+            </Button>
         </div>
     </div>
   )

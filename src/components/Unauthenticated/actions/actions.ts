@@ -1,5 +1,5 @@
 import { TokenType } from "@/constants/auth"
-import { ForgetPassFormData, JoinOrgData, LoginFormData, SetupOrgData, SignupFormData } from "@/constants/unauth-type"
+import { ForgetPassFormData, JoinOrgData, LoginFormData, ResetPassFormData, SetupOrgData, SignupFormData } from "@/constants/unauth-type"
 import { useErrorStore } from "@/store/useErrorStore"
 import { useUserStore } from "@/store/useUserStore"
 import { urlProvider } from "@/urls/urlProvider"
@@ -104,11 +104,34 @@ export const joinOrg = async (formValues: JoinOrgData, successCb?: () => void) =
     }
 }
 
-export const resetPass = async (formValues: ForgetPassFormData, successCb?: () => void) => {
+export const forgetPass = async (formValues: ForgetPassFormData, successCb?: () => void) => {
     const setErrorMessage  = useErrorStore.getState().setErrorMessage
 
     try{
         const res = await axios.post(`${urlProvider.auth}/reset_password`, {
+            ...formValues
+        })
+
+        if(res.data?.message){
+            toast(res.data?.message)
+        }
+
+        if(successCb){
+            successCb()
+        }
+        
+    }catch(err){
+        if(axios.isAxiosError(err)){
+            setErrorMessage(err.response?.data?.message ?? "Something went wrong!")      
+        }
+    }
+}
+
+export const resetPass = async (formValues: ResetPassFormData, successCb?: () => void) => {
+    const setErrorMessage  = useErrorStore.getState().setErrorMessage
+
+    try{
+        const res = await axios.patch(`${urlProvider.auth}/reset_password`, {
             ...formValues
         })
 

@@ -4,7 +4,7 @@ export enum unverifiedRouterPaths {
     SETUP_ORG = "/setup_org",
     JOIN_ORG = "/join_org",
     FORGET_PASSWORD = "/forget_password",
-    UPDATE_PASSWORD = "/update_password"
+    RESET_PASSWORD = "/reset_password"
 }
 
 export enum authenticatedRouterPaths {

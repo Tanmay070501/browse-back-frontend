@@ -10,6 +10,7 @@ import SingleSessionReplay from "@/pages/SingleSessionReplay"
 import JoinOrg from "../Unauthenticated/JoinOrg"
 import Team from "@/pages/Team"
 import { ForgetPassword } from "../Unauthenticated/ForgetPassword"
+import { ResetPassword } from "../Unauthenticated/ResetPassword"
 
 type Props = {}
 
@@ -33,6 +34,10 @@ const unverifiedRouter = createBrowserRouter([
     {
       path: unverifiedRouterPaths.FORGET_PASSWORD,
       element: <ForgetPassword/>
+    },
+    {
+      path: unverifiedRouterPaths.RESET_PASSWORD,
+      element: <ResetPassword/>
     },
     {
         path: '*',

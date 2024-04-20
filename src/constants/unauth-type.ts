@@ -74,3 +74,18 @@ export type ForgetPassFormData = {
 export const forgetPassInitialVals: ForgetPassFormData = {
     email: "",
 }
+
+export enum ResetPassFormDataKeys {
+    password = "password",
+}
+
+export type ResetPassFormData = {
+    password: string,
+    token?: string
+}
+
+export const resetPassInitialVals: (token: string) => ResetPassFormData = (token) => ({
+    name: "",
+    password: "",
+    token
+})
