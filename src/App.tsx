@@ -1,4 +1,3 @@
-import React from "react"
 import Routes from "./components/Router/Routes"
 import { Toaster } from "./components/ui/sonner"
 

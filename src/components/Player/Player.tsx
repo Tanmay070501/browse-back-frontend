@@ -173,7 +173,7 @@ const Player = ({ padding = 40, events = [] }: Props) => {
         
 
         return () => {
-            replayer.current?.$destroy()
+            (replayer.current as any)?.$destroy()
             replayer.current = null
         }
 

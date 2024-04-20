@@ -1,4 +1,3 @@
-import React from 'react'
 import WebsiteLogo from "@/assets/logo.svg?react"
 type Props = {}
 

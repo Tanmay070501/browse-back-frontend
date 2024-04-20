@@ -1,7 +1,5 @@
-import React from 'react'
 import Logo from '../Icons/Logo'
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 import { authenticatedRouterPaths } from '@/constants/router'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
@@ -20,7 +18,7 @@ const navItems = [
 
 type Props = {}
 
-const SideNavbar = (props: Props) => {
+const SideNavbar = (_props: Props) => {
   return (
     <nav className='h-full w-64 min-w-64 shadow-md'>
         <div className='flex flex-col w-full h-full gap-4'>
