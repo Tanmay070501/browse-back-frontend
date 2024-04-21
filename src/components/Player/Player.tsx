@@ -131,6 +131,7 @@ const Player = ({ padding = 40, events = [] }: Props) => {
                 height: elHeight - padding,
                 skipInactive: true,
                 speed: 1,
+                UNSAFE_replayCanvas: true
             }
         })
 
