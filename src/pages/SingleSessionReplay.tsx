@@ -22,9 +22,10 @@ const SingleSessionReplay = (_props: Props) => {
         init()
     }, [])
     
-    if(loading) return <Loader/>
-    if(!Object.keys(currentSessionReplay ?? {}).length)
-        return <p>nothing to show</p>
+  if(loading) 
+    return <Loader backdrop={true}/> 
+  if(!Object.keys(currentSessionReplay ?? {}).length)
+    return <p>nothing to show</p>
   return (
     <div className='w-full h-full flex'>
         <div style={{width: 800, height:"100%"}}>

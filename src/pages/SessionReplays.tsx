@@ -117,7 +117,7 @@ const SessionReplays = (_props: Props) => {
     getSessionReplays(currentProject?.id ?? 0, setLoading)
   }, [currentProject])
 
-  if(loading) return <Loader/>
+  if(loading) return <Loader backdrop={true}/>
 
   return (
     <div className='h-full flex flex-col gap-4'>
