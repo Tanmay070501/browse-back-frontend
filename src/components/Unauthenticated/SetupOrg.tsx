@@ -49,7 +49,6 @@ function SetupOrg({}: Props) {
   }
   return (
     <>
-        <div className='w-full h-full flex justify-center items-center'>
             <form className='w-[400px]' onSubmit={handleSubmit}>
                 <Card>
                 <CardHeader>
@@ -74,7 +73,6 @@ function SetupOrg({}: Props) {
                 </CardFooter>
                 </Card>
             </form>
-        </div>
     </>
   )
 }

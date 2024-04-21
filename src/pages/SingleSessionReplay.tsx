@@ -1,5 +1,6 @@
 import { getSingleSession } from '@/actions/session'
 import EventActionViewer from '@/components/EventActionViewer/EventActionViewer'
+import { Loader } from '@/components/Loader/Loader'
 import Player from '@/components/Player/Player'
 import { useSessionStore } from '@/store/useSesstionStore'
 import React from 'react'
@@ -21,7 +22,7 @@ const SingleSessionReplay = (_props: Props) => {
         init()
     }, [])
     
-    if(loading) return <p>Loading</p>
+    if(loading) return <Loader/>
     if(!Object.keys(currentSessionReplay ?? {}).length)
         return <p>nothing to show</p>
   return (

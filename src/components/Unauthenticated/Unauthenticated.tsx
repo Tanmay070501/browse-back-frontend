@@ -19,28 +19,26 @@ const Unauthenticated = (_props: Props) => {
     
 
     return (
-        <div className="w-full h-full flex justify-center items-center">
         <Tabs value={`${location.pathname}`} className="w-[400px]">
             <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value={`${unverifiedRouterPaths.LOGIN}`} asChild>
-                    <Link to={`${unverifiedRouterPaths.LOGIN}`}>
+                <TabsTrigger value={`/${unverifiedRouterPaths.LOGIN}`} asChild>
+                    <Link to={`/${unverifiedRouterPaths.LOGIN}`}>
                     Login
                     </Link>
                 </TabsTrigger>
-                <TabsTrigger value={`${unverifiedRouterPaths.SIGNUP}`} asChild>
-                    <Link to={`${unverifiedRouterPaths.SIGNUP}`}>
+                <TabsTrigger value={`/${unverifiedRouterPaths.SIGNUP}`} asChild>
+                    <Link to={`/${unverifiedRouterPaths.SIGNUP}`}>
                         Signup
                     </Link>
                 </TabsTrigger>
             </TabsList>
-            <TabsContent value={`${unverifiedRouterPaths.LOGIN}`}>
+            <TabsContent value={`/${unverifiedRouterPaths.LOGIN}`}>
                 <Login/>
             </TabsContent>
-            <TabsContent value={`${unverifiedRouterPaths.SIGNUP}`}>
+            <TabsContent value={`/${unverifiedRouterPaths.SIGNUP}`}>
                 <Signup/>
             </TabsContent>
             </Tabs>
-        </div>
     )
 }
 

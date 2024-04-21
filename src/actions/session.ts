@@ -5,7 +5,10 @@ import { errorToast } from "@/toast/toast"
 import { urlProvider } from "@/urls/urlProvider"
 import axios from "axios"
 
-export const getSessionReplays = async (projectId: number) => {
+export const getSessionReplays = async (projectId: number, loaderCallback?: (x: boolean) => void) => {
+    if(loaderCallback){
+        loaderCallback(true);
+    }
     if(!projectId) return
     const setSessionReplays = useSessionStore.getState().setSessionReplays
     try{
@@ -16,6 +19,10 @@ export const getSessionReplays = async (projectId: number) => {
     }catch(err){
         if(axios.isAxiosError(err)){
             errorToast(err.response?.data?.message ?? "Something went wrong!",)
+        }
+    }finally{
+        if(loaderCallback){
+            loaderCallback(false)
         }
     }
 }

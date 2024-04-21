@@ -34,7 +34,7 @@ const SideNavbar = (_props: Props) => {
                             <NavLink 
                             className={({isActive}) => 
                                 cn('flex items-center justify-center hover:bg-zinc-300 min-w-16 h-9 min-h-9 p-3 rounded-md', {
-                                    'bg-black  hover:bg-black text-white hover:bg-opacity-75 pointer-events-none': isActive
+                                    'bg-black  hover:bg-black text-white hover:bg-opacity-75': isActive
                                 })
                             } 
                             to={`/${item.path}`}

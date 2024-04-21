@@ -11,39 +11,46 @@ import JoinOrg from "../Unauthenticated/JoinOrg"
 import Team from "@/pages/Team"
 import { ForgetPassword } from "../Unauthenticated/ForgetPassword"
 import { ResetPassword } from "../Unauthenticated/ResetPassword"
+import UnauthLayout from "../Layouts/UnauthLayout"
 
 type Props = {}
 
 const unverifiedRouter = createBrowserRouter([
     {
-        path: unverifiedRouterPaths.LOGIN,
-        element: <Unauthenticated/>
+      path: "*",
+      element: <UnauthLayout/>,
+      children: [
+        {
+          path: unverifiedRouterPaths.LOGIN,
+          element: <Unauthenticated/>
+        },
+        {
+            path: unverifiedRouterPaths.SIGNUP,
+            element: <Unauthenticated/>
+        }, 
+        {
+            path: unverifiedRouterPaths.SETUP_ORG,
+            element: <SetupOrg/>
+        },
+        {
+          path: unverifiedRouterPaths.JOIN_ORG,
+          element: <JoinOrg/>
+        },
+        {
+          path: unverifiedRouterPaths.FORGET_PASSWORD,
+          element: <ForgetPassword/>
+        },
+        {
+          path: unverifiedRouterPaths.RESET_PASSWORD,
+          element: <ResetPassword/>
+        },
+        {
+            path: '*',
+            element: <Navigate to={unverifiedRouterPaths.LOGIN}/>
+        },
+  
+      ]
     },
-    {
-        path: unverifiedRouterPaths.SIGNUP,
-        element: <Unauthenticated/>
-    }, 
-    {
-        path: unverifiedRouterPaths.SETUP_ORG,
-        element: <SetupOrg/>
-    },
-    {
-      path: unverifiedRouterPaths.JOIN_ORG,
-      element: <JoinOrg/>
-    },
-    {
-      path: unverifiedRouterPaths.FORGET_PASSWORD,
-      element: <ForgetPassword/>
-    },
-    {
-      path: unverifiedRouterPaths.RESET_PASSWORD,
-      element: <ResetPassword/>
-    },
-    {
-        path: '*',
-        element: <Navigate to={unverifiedRouterPaths.LOGIN}/>
-    },
-
 ])
 
 const authenticatedRouter = createBrowserRouter([

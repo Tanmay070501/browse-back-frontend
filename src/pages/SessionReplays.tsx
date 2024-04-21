@@ -29,6 +29,7 @@ import { useNavigate } from 'react-router-dom'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
+import { Loader } from '@/components/Loader/Loader'
 
 type customTableHelperType = SessionReplay & {
   // calculated field
@@ -87,6 +88,7 @@ type Props = {}
 const SessionReplays = (_props: Props) => {
   const currentProject = useProjectStore(state => state.currentProject)
   const sessionReplays = useSessionStore(state => state.sessionReplays)
+  const [loading, setLoading] = React.useState(false)
 
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
@@ -112,8 +114,10 @@ const SessionReplays = (_props: Props) => {
 
 
   React.useEffect(() => {
-    getSessionReplays(currentProject?.id ?? 0)
+    getSessionReplays(currentProject?.id ?? 0, setLoading)
   }, [currentProject])
+
+  if(loading) return <Loader/>
 
   return (
     <div className='h-full flex flex-col gap-4'>

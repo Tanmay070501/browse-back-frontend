@@ -41,7 +41,6 @@ export const ForgetPassword = (_props: Props) => {
     }
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
         <div>
             <form className='w-[400px]' onSubmit={handleSubmit}>
             <Card>
@@ -73,6 +72,5 @@ export const ForgetPassword = (_props: Props) => {
             </Link>
         </Button>
         </div>
-    </div>
   )
 }

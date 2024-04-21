@@ -52,7 +52,6 @@ const JoinOrg = (_props: Props) => {
   }
   return (
     <>
-        <div className='w-full h-full flex justify-center items-center'>
             <form className='w-[400px]' onSubmit={handleSubmit}>
                 <Card>
                 <CardHeader>
@@ -77,7 +76,6 @@ const JoinOrg = (_props: Props) => {
                 </CardFooter>
                 </Card>
             </form>
-        </div>
     </>
   )
 }
