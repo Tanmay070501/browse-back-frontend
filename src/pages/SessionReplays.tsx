@@ -5,7 +5,6 @@ import { useSessionStore } from '@/store/useSesstionStore'
 import moment from "moment"
 
 import {
-  PaginationState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -90,32 +89,43 @@ const SessionReplays = (_props: Props) => {
   const sessionReplays = useSessionStore(state => state.sessionReplays)
   const [loading, setLoading] = React.useState(false)
 
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 7,
-  })
-
+  const [page, setPage] = React.useState(0)
+  const [pageCount, setPageCount] = React.useState(0);
+  
   const table = useReactTable({
     data: (sessionReplays as customTableHelperType[]) ?? [],
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    state: {
-      pagination
-    },
-    onPaginationChange: setPagination,
-    rowCount: ((sessionReplays as customTableHelperType[]) ?? []).length
   },)
   const navigate = useNavigate();
 
   const handlePageClick = (event: {selected: number}) => {
-    table.setPageIndex(event.selected)
+    setPage(event.selected)
+    getSessionReplays(currentProject?.id ?? 0,
+      (data) => {
+        if(!data){
+          return;
+        }
+        setPageCount(() => data?.totalPage)
+      },
+       setLoading,
+       event.selected
+    )
   };
 
 
   React.useEffect(() => {
-    getSessionReplays(currentProject?.id ?? 0, setLoading)
-  }, [currentProject])
+    getSessionReplays(currentProject?.id ?? 0,
+      (data) => {
+        if(!data){
+          return;
+        }
+        setPageCount(() => data?.totalPage)
+      },
+       setLoading
+    )
+  }, [currentProject, ])
 
   if(loading) return <Loader backdrop={true}/>
 
@@ -172,9 +182,10 @@ const SessionReplays = (_props: Props) => {
       <ReactPaginate
           breakLabel="..."
           nextLabel="Next"
+          forcePage={page}
           onPageChange={handlePageClick}
           pageRangeDisplayed={1}
-          pageCount={table.getPageCount()}
+          pageCount={pageCount}
           previousLabel="Previous"
           renderOnZeroPageCount={null}
           className='flex gap-2 justify-center'
